@@ -187,7 +187,7 @@ nav button.on{color:var(--gold)}
 
   <!-- ================= SCHEDULE ================= -->
   <section class="panel" id="schedule">
-    <p class="eyebrow" style="margin-top:22px">The Programme In Progress</p>
+    <p class="eyebrow" style="margin-top:22px">The Programme - In Progress</p>
     <div class="days" id="day-tabs"></div>
     <div id="tl-host"></div>
     <p class="small" id="s-foot"></p>
@@ -212,19 +212,23 @@ const DATA = {
   countdownTo: "2026-11-19T00:00:00+01:00",   // Marrakech time
 
   home: {
-    intro1: "Celebrate my thirtieth in style at palatial digs with broke grad student prices in Marrakech. If you’re invited, you have made an impact on my very short life!!!",
-    intro2: "Immeasurable gratitude for your consideration on this trip!!!",
+    intro1: "Celebrate Lucy's thirtieth in style at palatial digs with broke grad student prices in Marrakech.",
+    intro2: "Immeasurable gratitude for your consideration on this trip. If you’re invited, you have already made an impact on Lucy's very short life!!!",
     facts: [
       ["Where", "Route d'Ourika, Marrakesh, Marrakesh-Safi 40000"],
       ["Arrive", "Thu 19 Nov"],
-      ["Depart", "Sun 22 Nov, after lunch"],
+      ["Depart", "Mon 23 Nov, after lunch"],
       ["Dress", "Two theme nights — Black & Gold + Morocco Maximalist"]
     ],
+    /* third item is an optional link — leave it off for a plain, non-tappable row */
     todo: [
-      ["RSVP on Partiful", "See the great people who will be joining us"],
-      ["Place your deposit", "So we can hold your room "],
+      ["RSVP on Partiful", "See the great people who will be joining us",
+        "https://partiful.com/e/6Y8iZ2mX6NeD6N80tuIB"],
+      ["Place your deposit", "$125 to Lucy",
+        "https://account.venmo.com/u/lucyshen"],
       ["Join the WhatsApp", "Text Lucas or Lucy for an invite"],
-      ["Book your flight", "RAK airport, 20 min from the riad"],
+      ["Book your flight", "RAK airport, 20 min from the Kasbah",
+        "https://www.google.com/travel/flights?q=Flights%20to%20RAK%20on%202026-11-19%20through%202026-11-23"]
     ],
     foot: "Site last updated 16 Sept."
   },
@@ -260,7 +264,17 @@ const DATA = {
         { t:"9:00 PM", title:"Presentation & toasts", note:"9 – 10 PM · Fire throwers, speeches, cake", tone:"night" },
         { t:"10:00 PM", title:"Dancing — Night Two", note:"10 PM – late · DJ TBC", tone:"night" }
       ]},
-    { day:"Sun", date:"22 Nov", label:"Departures",
+    { day:"Sun", date:"22 Nov", label:"Souks & Sundown",
+      events:[
+        { t:"8:00 AM", title:"Breakfast", note:"8 – 10 AM" },
+        { t:"9:00 AM", title:"Yoga by the pool", note:"9 – 9:45 AM" },
+        { t:"10:30 AM", title:"Agafay desert excursion", note:"10:30 AM – 2 PM · Optional, sign up in WhatsApp", tone:"tent" },
+        { t:"12:30 PM", title:"Lunch", note:"12:30 – 2 PM · Poolside for anyone staying back" },
+        { t:"3:00 PM", title:"Free afternoon", note:"Pool, hammam, or one last run at the souks" },
+        { t:"7:00 PM", title:"Long table dinner", note:"7 – 9 PM · Last proper dinner, all together", tone:"night" },
+        { t:"9:30 PM", title:"Dancing — Night Three", note:"9:30 PM – late · Wind-down set", tone:"night" }
+      ]},
+    { day:"Mon", date:"23 Nov", label:"Departures",
       events:[
         { t:"8:00 AM", title:"Breakfast", note:"8 – 10 AM" },
         { t:"12:30 PM", title:"Check-out lunch & farewells", note:"12:30 – 2:30 PM · Bags to the lobby first" },
@@ -274,13 +288,13 @@ const DATA = {
     { t:"Partiful event", d:"RSVP and see who's coming",
       url:"https://partiful.com/e/6Y8iZ2mX6NeD6N80tuIB" },
     { t:"Trip calendar", d:"Subscribe — updates automatically",
-      url:"https://calendar.google.com/calendar/ical/aa85465838dde2316f798e57d5aa7578f5af0ce5672abc79ef731f43cccb0fe2%40group.calendar.google.com/public/basic.ics" },
+      url:"webcal://calendar.google.com/calendar/ical/aa85465838dde2316f798e57d5aa7578f5af0ce5672abc79ef731f43cccb0fe2%40group.calendar.google.com/public/basic.ics" },
     { t:"Shared photo album", d:"Everyone's photos in one place", url:"https://photos.app.goo.gl/RK5ZJXMEhtcmDA1T9" },
 
     { head:"Getting there" },
     { t:"Google Maps", d:"List of Key places",
       url:"https://maps.app.goo.gl/rWRafSthC2X1MkRc9" },
-    { t:"Marrakech Menara (RAK)", d:"20 min by car to the riad", url:"#" },
+    { t:"The Airbnb", d:"Rock the Kasbah", url:"#https://www.airbnb.com/rooms/39713727?" },
     { t:"Airport Coordination", d:"Send us your flight times so we can coordinate pickups / drop-offs", url:"#" },
 
     { head:"Good to know" },
@@ -306,10 +320,13 @@ $("#h-count").textContent = d > 0 ? d + " days to go" : (d === 0 ? "Today" : "")
 $("#h-facts").innerHTML = DATA.home.facts
   .map(([k,v]) => `<div class="fact"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
 
-$("#h-todo").innerHTML = DATA.home.todo
-  .map(([t,dd],i) => `<div class="link">
-      <div class="num">${String(i+1).padStart(2,"0")}</div>
-      <div><div class="t">${t}</div><div class="d">${dd}</div></div></div>`).join("");
+$("#h-todo").innerHTML = DATA.home.todo.map(([t,dd,url],i) => {
+  const inner = `<div class="num">${String(i+1).padStart(2,"0")}</div>
+      <div><div class="t">${t}</div><div class="d">${dd}</div></div>`;
+  return url
+    ? `<a class="link" href="${url}" target="_blank" rel="noopener nofollow">${inner}<div class="ar">›</div></a>`
+    : `<div class="link">${inner}</div>`;
+}).join("");
 
 $("#link-host").innerHTML = DATA.links.map(l =>
   l.head
