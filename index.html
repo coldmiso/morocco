@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="theme-color" content="#14143A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Marrakech · Nov 19–23</title>
+<style>
+/* ============================================================
+   PALETTE — change these six values to reskin the whole site
+   ============================================================ */
+:root{
+  --indigo:#14143A;
+  --indigo-2:#1E1E52;
+  --gold:#E8B44A;
+  --coral:#F0897E;
+  --cream:#F7F0E4;
+  --muted:#A9A8C8;
+
+  --bar-h:62px;
+  --radius:16px;
+  --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --font-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--indigo);
+  color:var(--cream);
+  font-family:var(--font-body);
+  font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior-y:none;
+}
+a{color:inherit;text-decoration:none}
+
+/* ---------- layout shell ---------- */
+.wrap{
+  max-width:640px;margin:0 auto;
+  padding:0 20px calc(var(--bar-h) + 28px + env(safe-area-inset-bottom));
+}
+.panel{display:none;animation:fade .18s ease-out}
+.panel.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0}
+.eyebrow{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;margin:0 0 10px
+}
+.section-title{font-size:22px;margin:30px 0 14px}
+p{margin:0 0 14px;color:#E6E1F2}
+.small{font-size:14px;color:var(--muted)}
+
+/* ---------- home ---------- */
+.hero{
+  margin:22px 0 26px;padding:34px 22px 28px;border-radius:22px;text-align:center;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(232,180,74,.22), transparent 62%),
+    radial-gradient(90% 70% at 50% 110%, rgba(240,137,126,.20), transparent 60%),
+    var(--indigo-2);
+  border:1px solid rgba(232,180,74,.28);
+}
+.hero .mark{width:34px;height:1px;background:var(--gold);margin:0 auto 18px;opacity:.8}
+.hero h1{font-size:38px;line-height:1.05;letter-spacing:-.01em}
+.hero h1 em{font-style:italic;color:var(--gold);display:block;font-size:26px;margin-top:6px}
+.hero .dates{
+  margin-top:16px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream)
+}
+.rule{height:1px;background:linear-gradient(90deg,transparent,rgba(232,180,74,.5),transparent);margin:18px 0}
+.countdown{font-size:13px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase}
+
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 6px}
+.fact{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:14px}
+.fact .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.fact .v{font-size:15px;margin-top:4px}
+
+/* ---------- schedule ---------- */
+.days{
+  display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;margin:0 -20px;
+  padding-left:20px;padding-right:20px;scrollbar-width:none;
+  position:sticky;top:0;z-index:5;background:var(--indigo);
+}
+.days::-webkit-scrollbar{display:none}
+.day-btn{
+  flex:0 0 auto;border:1px solid rgba(255,255,255,.16);background:transparent;color:var(--cream);
+  font:inherit;font-size:13px;padding:9px 15px;border-radius:999px;cursor:pointer;white-space:nowrap
+}
+.day-btn b{display:block;font-family:var(--font-display);font-size:15px;font-weight:600}
+.day-btn.on{background:var(--gold);color:#241a00;border-color:var(--gold)}
+
+.tl{position:relative;padding-left:74px;margin-top:6px}
+.tl:before{content:"";position:absolute;left:66px;top:6px;bottom:6px;width:1px;background:rgba(255,255,255,.14)}
+.ev{position:relative;padding:12px 14px;margin-bottom:10px;border-radius:14px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.ev .time{position:absolute;left:-74px;top:14px;width:58px;text-align:right;
+  font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ev:after{content:"";position:absolute;left:-12px;top:19px;width:9px;height:9px;border-radius:50%;
+  background:var(--indigo);border:2px solid var(--gold)}
+.ev h3{font-size:16px}
+.ev .note{font-size:13px;color:var(--muted);margin-top:3px}
+.ev.night{background:linear-gradient(135deg,rgba(240,137,126,.16),rgba(232,180,74,.10));
+  border-color:rgba(240,137,126,.4)}
+.ev.night:after{background:var(--coral);border-color:var(--coral)}
+.ev.tent{border-style:dashed;opacity:.85}
+.tag{display:inline-block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(232,180,74,.45);border-radius:999px;padding:2px 8px;margin-bottom:6px}
+
+/* ---------- links ---------- */
+.link{
+  display:flex;align-items:center;gap:14px;padding:15px 16px;margin-bottom:10px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:var(--radius)
+}
+.link:active{background:rgba(255,255,255,.1)}
+.link .num{font-family:var(--font-display);font-size:13px;color:var(--gold);
+  width:20px;flex:0 0 auto;letter-spacing:.04em;padding-top:1px}
+.link .t{font-size:15px;font-weight:600}
+.link .d{font-size:13px;color:var(--muted)}
+.link .ar{margin-left:auto;color:var(--muted);font-size:18px}
+
+/* ---------- tab bar ---------- */
+nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;
+  display:flex;background:rgba(20,20,58,.92);
+  -webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);
+  border-top:1px solid rgba(255,255,255,.1);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+nav button{
+  flex:1;background:none;border:0;color:var(--muted);font:inherit;font-size:10.5px;
+  letter-spacing:.04em;padding:9px 0 7px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px;height:var(--bar-h)
+}
+nav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--gold)}
+
+/* ---------- desktop: tabs move to the top ---------- */
+@media (min-width:768px){
+  nav{
+    position:sticky;top:0;bottom:auto;border-top:0;border-bottom:1px solid rgba(255,255,255,.1);
+    justify-content:center;gap:10px;padding:0
+  }
+  nav button{flex:0 0 auto;flex-direction:row;gap:8px;font-size:14px;padding:0 20px;height:58px}
+  nav button svg{width:18px;height:18px}
+  .wrap{padding-bottom:60px}
+  .days{top:58px}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <button data-tab="home" class="on">
+    <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/></svg>Home</button>
+  <button data-tab="schedule">
+    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>Schedule</button>
+  <button data-tab="links">
+    <svg viewBox="0 0 24 24"><path d="M10 13a4 4 0 0 0 6 .5l2-2a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 11a4 4 0 0 0-6-.5l-2 2A4 4 0 0 0 11.7 18l1-1"/></svg>Links &amp; Info</button>
+</nav>
+
+<div class="wrap">
+
+  <!-- ================= HOME ================= -->
+  <section class="panel on" id="home">
+    <div class="hero">
+      <div class="mark"></div>
+      <h1>Marrakech<em>Lucy turns thirty</em></h1>
+      <div class="rule"></div>
+      <div class="dates" id="h-dates"></div>
+      <div class="countdown" id="h-count" style="margin-top:8px"></div>
+    </div>
+
+    <p id="h-intro1"></p>
+    <p id="h-intro2"></p>
+
+    <div class="facts" id="h-facts"></div>
+
+    <h2 class="section-title">Before you go</h2>
+    <div id="h-todo"></div>
+    <p class="small" id="h-foot" style="margin-top:22px"></p>
+  </section>
+
+  <!-- ================= SCHEDULE ================= -->
+  <section class="panel" id="schedule">
+    <p class="eyebrow" style="margin-top:22px">The Programme</p>
+    <div class="days" id="day-tabs"></div>
+    <div id="tl-host"></div>
+    <p class="small" id="s-foot"></p>
+  </section>
+
+  <!-- ================= LINKS & INFO ================= -->
+  <section class="panel" id="links">
+    <p class="eyebrow" style="margin-top:22px">Links &amp; Info</p>
+    <div id="link-host"></div>
+  </section>
+
+</div>
+
+<script>
+/* ==========================================================================
+   EVERYTHING EDITABLE LIVES HERE. Change text below, save, re-upload.
+   Nothing under this block needs to be touched.
+   ========================================================================== */
+const DATA = {
+
+  dates: "19 – 23 November 2026",
+  countdownTo: "2026-11-19T00:00:00+01:00",   // Marrakech time
+
+  home: {
+    intro1: "Placeholder intro. Four days in the Red City for Lucy's thirtieth — one riad, one very long table, and a guest list that keeps quietly growing. Everything you need is on these three tabs.",
+    intro2: "Flights and rooms are on you; once you land, everything below is handled. Come hungry, pack something gold.",
+    facts: [
+      ["Where", "Riad Placeholder, Medina"],
+      ["Arrive", "Thu 19 Nov, by 5 PM"],
+      ["Depart", "Sun 22 Nov, after lunch"],
+      ["Dress", "Two theme nights — see Info"]
+    ],
+    todo: [
+      ["Book your flight", "RAK airport, 20 min from the riad"],
+      ["RSVP on Partiful", "So we can hold your room"],
+      ["Place your deposit", "To "],
+      ["Subscribe to the calendar", "Times auto-update if plans move"]
+    ],
+    foot: "Questions → text Lucas or Lucy. Site last updated 16 Sept."
+  },
+
+  /* tone: "" = normal · "night" = late-night highlight · "tent" = not confirmed */
+  schedule: [
+    { day:"Thu", date:"19 Nov", label:"Arrivals",
+      events:[
+        { t:"All day", title:"Arrivals & check-in", note:"Drop bags any time — mint tea on the roof" },
+        { t:"7:00 PM", title:"Welcome Dinner", note:"7 – 9 PM · Courtyard, all together", tone:"night" },
+        { t:"9:30 PM", title:"Rooftop nightcap", note:"Optional, low-key" }
+      ]},
+    { day:"Fri", date:"20 Nov", label:"Black & Gold",
+      events:[
+        { t:"8:00 AM", title:"Breakfast", note:"8 – 10 AM · Come when you wake up" },
+        { t:"9:00 AM", title:"Yoga by the pool", note:"9 – 9:45 AM · Mats provided" },
+        { t:"10:00 AM", title:"Town walk & souks", note:"10 AM – 12 PM · Guided, meet at the front door" },
+        { t:"12:30 PM", title:"Lunch", note:"12:30 – 2 PM · Poolside, casual" },
+        { t:"2:30 PM", title:"Dune buggies", note:"2:30 – 5 PM · Sign-up sheet in WhatsApp", tone:"tent" },
+        { t:"2:30 PM", title:"Hammam & spa", note:"2:30 – 5 PM · The gentler option" },
+        { t:"6:00 PM", title:"Intro Games", note:"6 – 7 PM · Nobody escapes this one" },
+        { t:"7:00 PM", title:"Black and Gold Night", note:"7 – 9 PM · Dinner, dress the theme", tone:"night" },
+        { t:"10:00 PM", title:"Dancing — Night One", note:"10 PM – late · DJ TBC", tone:"night" }
+      ]},
+    { day:"Sat", date:"21 Nov", label:"The Big One",
+      events:[
+        { t:"8:00 AM", title:"Breakfast", note:"8 – 10 AM" },
+        { t:"9:00 AM", title:"Yoga by the pool", note:"9 – 9:45 AM" },
+        { t:"10:00 AM", title:"Free morning", note:"Pool, market run, or nothing at all" },
+        { t:"12:30 PM", title:"Lunch", note:"12:30 – 2 PM" },
+        { t:"2:00 PM", title:"Group photo", note:"2 PM sharp · Wear something you like" },
+        { t:"7:00 PM", title:"Maximal Marrakesh", note:"7 – 9 PM · The big dinner, maximum colour", tone:"night" },
+        { t:"9:00 PM", title:"Presentation & toasts", note:"9 – 10 PM · Fire throwers, speeches, cake", tone:"night" },
+        { t:"10:00 PM", title:"Dancing — Night Two", note:"10 PM – late · DJ TBC", tone:"night" }
+      ]},
+    { day:"Sun", date:"22 Nov", label:"Departures",
+      events:[
+        { t:"8:00 AM", title:"Breakfast", note:"8 – 10 AM" },
+        { t:"12:30 PM", title:"Check-out lunch & farewells", note:"12:30 – 2:30 PM · Bags to the lobby first" },
+        { t:"3:00 PM", title:"Airport transfers", note:"Rolling — tell us your flight time" }
+      ]}
+  ],
+  scheduleFoot: "All times Marrakech local (GMT+1). Times shift; the calendar link is always right.",
+
+  links: [
+    { head:"Coordinate" },
+    { t:"Partiful event", d:"RSVP and see who's coming",
+      url:"https://partiful.com/e/6Y8iZ2mX6NeD6N80tuIB" },
+    { t:"Trip calendar", d:"Subscribe — updates automatically",
+      url:"https://calendar.google.com/calendar/u/0?cid=YWE4NTQ2NTgzOGRkZTIzMTZmNzk4ZTU3ZDVhYTc1NzhmNWFmMGNlNTY3MmFiYzc5ZWY3MzFmNDNjY2NiMGZlMkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t" },
+    { t:"WhatsApp group", d:"Day-of updates and plan changes", url:"#" },
+    { t:"Shared photo album", d:"Everyone's photos in one place", url:"#" },
+
+    { head:"Getting there" },
+    { t:"The riad on Google Maps", d:"Tap for directions",
+      url:"https://maps.app.goo.gl/rWRafSthC2X1MkRc9" },
+    { t:"Marrakech Menara (RAK)", d:"20 min by car to the riad", url:"#" },
+    { t:"Airport transfer form", d:"Send us your flight times", url:"#" },
+
+    { head:"Good to know" },
+    { t:"Packing list & logistics", d:"Living doc — check before you fly", url:"#" },
+    { t:"Theme nights & dress code", d:"Black & Gold, Maximal Marrakesh", url:"#" },
+    { t:"Weather & what to expect", d:"Warm days, cold nights", url:"#" }
+  ]
+};
+
+/* ---------- render (no need to edit below) ---------- */
+const $ = s => document.querySelector(s);
+
+$("#h-dates").textContent = DATA.dates;
+$("#h-intro1").textContent = DATA.home.intro1;
+$("#h-intro2").textContent = DATA.home.intro2;
+$("#h-foot").textContent = DATA.home.foot;
+$("#s-foot").textContent = DATA.scheduleFoot;
+
+const d = Math.ceil((new Date(DATA.countdownTo) - new Date())/864e5);
+$("#h-count").textContent = d > 0 ? d + " days to go" : (d === 0 ? "Today" : "");
+
+$("#h-facts").innerHTML = DATA.home.facts
+  .map(([k,v]) => `<div class="fact"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+
+$("#h-todo").innerHTML = DATA.home.todo
+  .map(([t,dd],i) => `<div class="link">
+      <div class="num">${String(i+1).padStart(2,"0")}</div>
+      <div><div class="t">${t}</div><div class="d">${dd}</div></div></div>`).join("");
+
+$("#link-host").innerHTML = DATA.links.map(l =>
+  l.head
+    ? `<h2 class="section-title">${l.head}</h2>`
+    : `<a class="link" href="${l.url}" target="_blank" rel="noopener nofollow">
+         <div><div class="t">${l.t}</div><div class="d">${l.d}</div></div>
+         <div class="ar">›</div></a>`
+).join("");
+
+const dayTabs = $("#day-tabs"), tlHost = $("#tl-host");
+dayTabs.innerHTML = DATA.schedule.map((s,i) =>
+  `<button class="day-btn${i===0?" on":""}" data-i="${i}"><b>${s.day}</b>${s.date}</button>`).join("");
+
+function drawDay(i){
+  const s = DATA.schedule[i];
+  tlHost.innerHTML =
+    `<p class="eyebrow" style="margin:6px 0 12px">${s.label}</p><div class="tl">` +
+    s.events.map(e => `
+      <div class="ev ${e.tone||""}">
+        <div class="time">${e.t}</div>
+        ${e.tone==="tent" ? '<span class="tag">To confirm</span><br>' : ""}
+        <h3>${e.title}</h3>
+        <div class="note">${e.note||""}</div>
+      </div>`).join("") + `</div>`;
+  dayTabs.querySelectorAll(".day-btn").forEach((b,j)=>b.classList.toggle("on", j===i));
+}
+dayTabs.addEventListener("click", e => {
+  const b = e.target.closest(".day-btn"); if(b) drawDay(+b.dataset.i);
+});
+drawDay(0);
+
+function show(tab){
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("on", p.id===tab));
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.tab===tab));
+  if(location.hash.slice(1) !== tab) history.replaceState(null,"","#"+tab);
+  window.scrollTo(0,0);
+}
+$("#nav").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(b) show(b.dataset.tab);
+});
+if(["home","schedule","links"].includes(location.hash.slice(1))) show(location.hash.slice(1));
+</script>
+</body>
+</html>
