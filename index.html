@@ -367,8 +367,8 @@ const DATA = {
 
     { head:"Good to know" },
     { t:"Packing list & logistics", d:"Just our recommendations", url:"#" },
-    { t:"Black & Gold Moodboard", d:"Pinterest", url:"#" },
-    { t:"Moroccan Maximalist Moodboard", d:"Pinterest", url:"#" },
+    { t:"Black & Gold Moodboard", d:"Fri 20 Nov · Mood board coming soon", url:"themes/black-gold/" },
+    { t:"Moroccan Maximalist Moodboard", d:"Sat 21 Nov · Scroll the collage", url:"themes/maximalist/" },
     { t:"Weather & what to expect", d:"Warm days, cold nights", url:"#" }
   ]
 };
@@ -402,10 +402,12 @@ $("#h-themes").innerHTML = DATA.home.themes.map(t => `
     <div class="in"><div class="k">${t.day}</div><h3>${t.title}</h3><div class="d">${t.note}</div></div>
   </a>`).join("");
 
+/* on-site pages (no "scheme:") open in the same tab; everything else in a new one */
+const ext = url => /^[a-z]+:/i.test(url) ? ' target="_blank" rel="noopener nofollow"' : "";
 $("#link-host").innerHTML = DATA.links.map(l =>
   l.head
     ? `<h2 class="section-title">${l.head}</h2>`
-    : `<a class="link" href="${l.url}" target="_blank" rel="noopener nofollow">
+    : `<a class="link" href="${l.url}"${ext(l.url)}>
          <div><div class="t">${l.t}</div><div class="d">${l.d}</div></div>
          <div class="ar">›</div></a>`
 ).join("");
