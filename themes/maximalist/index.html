@@ -11,7 +11,7 @@
 <style>
   /* Layout: the poster is pinned behind everything; a tall scroll track carries
      cutout "stickers" that slide in from the left and right and settle over it.
-     Phone (portrait): poster fills the screen. Laptop: poster column on plain paper. The poster fades under a paper wash as you scroll. */
+     Phone: poster fills the screen with a slight zoom. Laptop: poster spans the full width. Either way it pans down as you scroll and fades under a paper wash. */
   /* Palette and fonts match the main site's paper look (/index.html :root) — keep in sync. */
   :root {
     --bg: #F1E6D2;           /* paper: page background */
@@ -46,17 +46,23 @@
   /* ---------- pinned poster ---------- */
   .stage { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--bg); }
   .stage img { position: absolute; display: block; max-width: none; }
-  .stage .sharp { inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+  /* The poster is at least as wide as the window (laptop: full-bleed, much taller than the
+     screen) and at least --overscan × the screen height (phone: a slight zoom), then pans
+     upward as you scroll (--pan, set in JS) so you travel down the whole poster. */
+  .stage {
+    --overscan: 1.25;
+    --vh: 100vh;
+  }
+  @supports (height: 1svh) { .stage { --vh: 100svh; } }
+  .stage .sharp {
+    top: 0; left: 50%;
+    width: max(100vw, calc(var(--vh) * var(--overscan) * 941 / 1672)); height: auto;
+    transform: translate3d(-50%, var(--pan, 0px), 0);
+    will-change: transform;
+  }
   .stage .shade {
     position: absolute; inset: 0;
     background: rgba(var(--wash), var(--dim, 0));
-  }
-  @media (min-aspect-ratio: 3/4) {
-    .stage .sharp {
-      inset: auto; top: 0; left: 50%; height: 100%; width: auto; object-fit: contain;
-      transform: translateX(-50%);
-      box-shadow: 0 10px 50px rgba(var(--shadow), .28);
-    }
   }
 
   /* ---------- scroll cue ---------- */
@@ -207,7 +213,8 @@
   const root = document.documentElement;
   const stageShade = document.querySelector('.stage');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  let vw = 0, vh = 0, docH = 0, ticking = false;
+  const poster = document.querySelector('.stage .sharp');
+  let vw = 0, vh = 0, docH = 0, panMax = 0, panEnd = 1, ticking = false;
 
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const easeOut = t => 1 - Math.pow(1 - t, 3);
@@ -217,6 +224,9 @@
     docH = document.documentElement.scrollHeight;
     const tr = track.getBoundingClientRect();
     const trTop = tr.top + scrollY;
+    // poster reaches its bottom edge just as the collage ends and the closing card arrives
+    panMax = Math.max(0, poster.offsetHeight - vh);
+    panEnd = Math.max(1, trTop + track.offsetHeight - vh);
     cuts.forEach(c => {
       c.top = trTop + c.row.offsetTop + c.el.offsetTop;
       c.left = tr.left + c.el.offsetLeft;
@@ -233,6 +243,8 @@
     const end = clamp((y + vh - (docH - vh * 0.95)) / (vh * 0.7)) * 0.4;
     stageShade.style.setProperty('--dim', (start + end).toFixed(3));
     root.style.setProperty('--cue', clamp(1 - y / (vh * 0.15)).toFixed(3));
+    const pan = reduce.matches ? 0 : -panMax * clamp(y / panEnd);
+    stageShade.style.setProperty('--pan', pan.toFixed(1) + 'px');
 
     if (reduce.matches) return;
     cuts.forEach(c => {
@@ -265,6 +277,7 @@
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', refresh);
   addEventListener('load', refresh);
+  if (!poster.complete) poster.addEventListener('load', refresh);
   if (document.fonts) document.fonts.ready.then(refresh);
   reduce.addEventListener?.('change', () => {
     if (reduce.matches) cuts.forEach(c => { c.el.style.transform = ''; });
