@@ -79,6 +79,30 @@ p{margin:0 0 14px;color:#E6E1F2}
 .fact .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .fact .v{font-size:15px;margin-top:4px}
 
+/* ---------- theme nights ---------- */
+.themes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.theme{
+  position:relative;overflow:hidden;aspect-ratio:3/4;border-radius:var(--radius);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:14px;
+  background:var(--indigo-2);border:1px solid rgba(255,255,255,.09)
+}
+.theme:active{opacity:.85}
+.theme img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.theme.photo:before{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(20,20,58,0) 38%,rgba(20,20,58,.94) 88%)}
+.theme .in{position:relative;z-index:2}
+.theme .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.theme h3{font-size:18px;line-height:1.15;margin-top:4px}
+.theme .d{font-size:13px;color:var(--muted);margin-top:6px}
+.theme.bg{
+  justify-content:center;text-align:center;color:#C9A24A;border-color:rgba(201,162,74,.45);
+  background:repeating-linear-gradient(90deg,#0B0A08 0 24px,#14110B 24px 48px)
+}
+.theme.bg .k{color:#C9A24A}
+.theme.bg h3{font-size:22px;line-height:1.1;margin-top:12px}
+.theme.bg h3:before{content:"";display:block;width:28px;height:1px;background:#C9A24A;margin:0 auto 12px;opacity:.8}
+.theme.bg .d{color:#F3E7C9;opacity:.75;margin-top:12px}
+
 /* ---------- schedule ---------- */
 .days{
   display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;margin:0 -20px;
@@ -182,6 +206,9 @@ nav button.on{color:var(--gold)}
 
     <h2 class="section-title">Before you go</h2>
     <div id="h-todo"></div>
+
+    <h2 class="section-title">Theme Nights</h2>
+    <div class="themes" id="h-themes"></div>
     <p class="small" id="h-foot" style="margin-top:22px"></p>
   </section>
 
@@ -229,6 +256,13 @@ const DATA = {
       ["Join the WhatsApp", "Text Lucas or Lucy for an invite"],
       ["Book your flight", "RAK airport, 20 min from the Kasbah",
         "https://www.google.com/travel/flights?q=Flights%20to%20RAK%20on%202026-11-19%20through%202026-11-23"]
+    ],
+    /* style "bg" = black & gold typographic card · img = photo card */
+    themes: [
+      { day:"Fri 20 Nov", title:"Black &amp; Gold Night", note:"Mood board coming soon",
+        url:"themes/black-gold/", style:"bg" },
+      { day:"Sat 21 Nov", title:"Moroccan Maximalist", note:"Scroll the collage ›",
+        url:"themes/maximalist/", img:"themes/maximalist/card.webp" }
     ],
     foot: "Site last updated 16 Sept."
   },
@@ -327,6 +361,12 @@ $("#h-todo").innerHTML = DATA.home.todo.map(([t,dd,url],i) => {
     ? `<a class="link" href="${url}" target="_blank" rel="noopener nofollow">${inner}<div class="ar">›</div></a>`
     : `<div class="link">${inner}</div>`;
 }).join("");
+
+$("#h-themes").innerHTML = DATA.home.themes.map(t => `
+  <a class="theme ${t.img ? "photo" : t.style||""}" href="${t.url}">
+    ${t.img ? `<img src="${t.img}" alt="" width="360" height="480" loading="lazy" decoding="async">` : ""}
+    <div class="in"><div class="k">${t.day}</div><h3>${t.title}</h3><div class="d">${t.note}</div></div>
+  </a>`).join("");
 
 $("#link-host").innerHTML = DATA.links.map(l =>
   l.head
