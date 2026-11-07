@@ -6,11 +6,13 @@ Owner: Lucas Warfield. Guests open this on their phones, often on mobile data ab
 ## Hosting
 - Static HTML/CSS/JS, no build step, no framework. Served by GitHub Pages from this repo.
 - Custom domain via the `CNAME` file (`morocco.warfield.me`). Never delete or edit `CNAME`.
+- `_config.yml` keeps this file out of the published site; keep `CLAUDE.md` in its `exclude` list.
 - Pushing to the default branch deploys. Keep `main` deployable at all times.
 
 ## Non-negotiables
 - Every page keeps `<meta name="robots" content="noindex, nofollow">`; keep `robots.txt` disallowing all.
 - No per-person pricing on the site. Costs live in the linked Google Doc.
+  Exception (owner-approved): the "$125 to Lucy" deposit item on the Home tab stays.
 - Mobile-first, iOS Safari is the primary target; desktop (13" laptop) secondary. Check 390px width first.
 - No horizontal scroll at any width. Respect `env(safe-area-inset-*)`.
 - Living content (packing list, logistics) stays in the linked Google Doc; photos stay a link to the Google Photos album (no iframes — they break on mobile Safari).

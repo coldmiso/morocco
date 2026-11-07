@@ -1,0 +1,4 @@
+# GitHub Pages (Jekyll) build settings. The site itself is plain HTML.
+# Keep the Claude rules file out of the published site.
+exclude:
+  - CLAUDE.md
