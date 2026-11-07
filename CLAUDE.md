@@ -32,7 +32,8 @@ Owner: Lucas Warfield. Guests open this on their phones, often on mobile data ab
   Restyle by editing tokens, not by hard-coding values in rules.
 - Current fonts — main site: Gloock (display: hero, headings, cards; one weight, no italic, so
   `font-synthesis:none`) from Google Fonts + the system UI stack (body).
-  Theme pages: Syncopate (display, uppercase, wide tracking) + Instrument Sans (body), from Google Fonts.
+  Theme pages use the same fonts and paper palette; each keeps its own small `:root` (marked
+  "keep in sync" with `/index.html`). The Black & Gold card stays black with gold type.
   (Subject to change — update this line when fonts change.)
 - Images: WebP, compressed, `width`/`height` set, `loading="lazy"` below the fold.
 - Animations: scroll-driven via rAF/IntersectionObserver, transform/opacity only,

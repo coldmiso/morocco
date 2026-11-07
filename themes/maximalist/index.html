@@ -7,23 +7,26 @@
 <title>Moroccan Maximalist Night</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Instrument+Sans:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&display=swap">
 <style>
   /* Layout: the poster is pinned behind everything; a tall scroll track carries
      cutout "stickers" that slide in from the left and right and settle over it.
-     Phone (portrait): poster fills the screen. Laptop: sharp poster column, blurred poster behind. */
+     Phone (portrait): poster fills the screen. Laptop: poster column on plain paper. The poster fades under a paper wash as you scroll. */
+  /* Palette and fonts match the main site's paper look (/index.html :root) — keep in sync. */
   :root {
-    --night: #140e1c;      /* deep plum-black from the poster's shadows */
-    --scrim: 20, 12, 30;   /* rgb of the darkening layer */
-    --paper: #f1dcb8;      /* cream torn-paper edge of the cutouts */
-    --lantern: #e2a23a;    /* lantern gold */
-    --coral: #e9745c;      /* poster coral */
-    --fg: #f6ead6;
-    --display: "Syncopate", "Arial Black", "Helvetica Neue", sans-serif;
-    --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --bg: #F1E6D2;           /* paper: page background */
+    --surface: #F8F2E6;      /* lighter paper: closing card, scroll cue */
+    --wash: 241, 230, 210;   /* rgb of the paper wash that fades the poster */
+    --ink: #23204A;          /* indigo ink: text */
+    --muted: #655D70;
+    --line: 35, 32, 74;      /* rgb of hairlines (ink) */
+    --accent-text: #8A5A0C;  /* ochre: gold for text on paper */
+    --shadow: 42, 26, 18;    /* rgb of the warm umber cutout shadow */
+    --display: "Gloock", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --u: 100vw;            /* sizing unit for cutouts: screen width on phones */
     --row: 56vh;
-    color-scheme: dark;
+    color-scheme: light;
   }
   @supports (height: 1svh) { :root { --row: 56svh; } }
   @media (min-aspect-ratio: 3/4) {
@@ -34,30 +37,25 @@
   html, body { overflow-x: clip; }
   body {
     margin: 0;
-    background: var(--night);
-    color: var(--fg);
+    background: var(--bg);
+    color: var(--ink);
     font-family: var(--body);
     -webkit-font-smoothing: antialiased;
   }
 
   /* ---------- pinned poster ---------- */
-  .stage { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--night); }
+  .stage { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--bg); }
   .stage img { position: absolute; display: block; max-width: none; }
   .stage .sharp { inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
-  .stage .blur { display: none; }
   .stage .shade {
     position: absolute; inset: 0;
-    background: rgba(var(--scrim), var(--dim, 0));
+    background: rgba(var(--wash), var(--dim, 0));
   }
   @media (min-aspect-ratio: 3/4) {
-    .stage .blur {
-      display: block; inset: -8%; width: 116%; height: 116%; object-fit: cover;
-      filter: blur(44px) saturate(1.1) brightness(.8); opacity: .4;
-    }
     .stage .sharp {
       inset: auto; top: 0; left: 50%; height: 100%; width: auto; object-fit: contain;
       transform: translateX(-50%);
-      box-shadow: 0 0 80px 10px rgba(var(--scrim), .7);
+      box-shadow: 0 10px 50px rgba(var(--shadow), .28);
     }
   }
 
@@ -68,9 +66,9 @@
     transform: translateX(-50%);
     display: flex; align-items: center; gap: 10px;
     padding: 9px 16px 9px 18px; border-radius: 999px;
-    background: rgba(var(--scrim), .72); color: var(--paper);
-    border: 1px solid rgba(241, 220, 184, .35);
-    font: 700 10px/1 var(--display); letter-spacing: .28em; text-transform: uppercase;
+    background: rgba(248, 242, 230, .9); color: var(--ink);
+    border: 1px solid rgba(var(--line), .15);
+    font: 600 11px/1 var(--body); letter-spacing: .18em; text-transform: uppercase;
     pointer-events: none; opacity: var(--cue, 1);
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
   }
@@ -98,7 +96,7 @@
   .cut.tile { z-index: 1; }
   .cut img {
     display: block; width: 100%; height: auto;
-    filter: drop-shadow(0 12px 16px rgba(10, 5, 18, .55));
+    filter: drop-shadow(0 10px 14px rgba(var(--shadow), .4));
   }
   @media (min-aspect-ratio: 3/4) {
     .cut { --x: var(--xd); top: var(--td, 0%); }
@@ -114,24 +112,29 @@
     padding-right: max(16px, env(safe-area-inset-right, 0px));
     text-align: center;
   }
-  .end .inner { display: grid; gap: 18px; justify-items: center; max-width: 34rem; }
+  .end .inner {
+    display: grid; gap: 18px; justify-items: center; max-width: 34rem;
+    padding: 40px 26px; border-radius: 22px;
+    background: var(--surface); border: 1px solid rgba(var(--line), .12);
+    box-shadow: 0 10px 40px rgba(var(--shadow), .18);
+  }
   .eyebrow {
-    font: 700 11px/1.4 var(--display); letter-spacing: .3em; text-transform: uppercase;
-    color: var(--lantern);
+    font: 600 11px/1.4 var(--body); letter-spacing: .18em; text-transform: uppercase;
+    color: var(--accent-text);
   }
   .end h2 {
-    margin: 0; font: 700 clamp(30px, 9vw, 64px)/1.02 var(--display);
-    letter-spacing: -.01em; text-transform: uppercase; text-wrap: balance;
-    color: var(--paper);
+    margin: 0; font: 400 clamp(38px, 11vw, 72px)/1.02 var(--display); font-synthesis: none;
+    letter-spacing: -.01em; text-wrap: balance;
+    color: var(--ink);
   }
-  .end p { margin: 0; font-size: 17px; line-height: 1.55; color: var(--fg); opacity: .88; text-wrap: pretty; }
+  .end p { margin: 0; font-size: 17px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
   .end a {
-    margin-top: 8px; color: var(--paper); text-decoration: none;
-    font: 700 10px/1 var(--display); letter-spacing: .28em; text-transform: uppercase;
-    padding: 12px 18px; border: 1px solid rgba(241, 220, 184, .45); border-radius: 999px;
+    margin-top: 8px; color: var(--ink); text-decoration: none;
+    font: 600 11px/1 var(--body); letter-spacing: .16em; text-transform: uppercase;
+    padding: 13px 18px; border: 1px solid rgba(var(--line), .25); border-radius: 999px;
   }
-  .end a:hover { background: rgba(241, 220, 184, .1); }
-  .end a:focus-visible { outline: 2px solid var(--lantern); outline-offset: 3px; }
+  .end a:hover { background: rgba(var(--line), .06); }
+  .end a:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -142,7 +145,6 @@
 </head>
 <body>
 <div class="stage" aria-hidden="true">
-  <img class="blur" src="poster.webp" alt="">
   <img class="sharp" src="poster.webp" alt="" width="941" height="1672" fetchpriority="high">
   <div class="shade"></div>
 </div>

@@ -7,26 +7,31 @@
 <title>Black &amp; Gold Night</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Instrument+Sans:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&display=swap">
 <style>
   /* PLACEHOLDER. When the poster + cutouts exist, rebuild this page from
      /themes/maximalist/index.html (same scroll engine, swap assets + palette). */
+  /* Paper page (matches the main site, /index.html :root — keep in sync) with the
+     Black & Gold card from the Home tab in the middle. */
   :root {
-    --ink: #0b0a08;
-    --gold: #c9a24a;       /* gold leaf */
-    --paper: #f3e7c9;      /* warm cream text */
+    --bg: #F1E6D2;          /* paper: page background */
+    --text: #23204A;        /* indigo ink */
+    --ink: #0b0a08;         /* card black */
+    --ink-2: #14110b;       /* card stripe */
+    --gold: #c9a24a;        /* gold leaf */
+    --paper: #f3e7c9;       /* warm cream text on the card */
     --rule: rgba(201, 162, 74, .45);
-    --display: "Syncopate", "Arial Black", "Helvetica Neue", sans-serif;
-    --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
-    color-scheme: dark;
+    --shadow: 42, 26, 18;   /* rgb of the warm umber card shadow */
+    --display: "Gloock", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color-scheme: light;
   }
   html, body { margin: 0; overflow-x: clip; }
   body {
     min-height: 100vh; min-height: 100svh;
     display: grid; place-items: center;
-    background:
-      repeating-linear-gradient(90deg, var(--ink) 0 48px, #14110b 48px 96px);
-    color: var(--paper);
+    background: var(--bg);
+    color: var(--text);
     font-family: var(--body);
     -webkit-font-smoothing: antialiased;
     padding: max(24px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px))
@@ -35,23 +40,25 @@
   }
   .card {
     display: grid; gap: 18px; justify-items: center; text-align: center;
-    max-width: 34rem; padding: 48px 28px;
-    background: var(--ink); border: 1px solid var(--rule);
+    max-width: 34rem; padding: 48px 28px; border-radius: 22px;
+    color: var(--paper); border: 1px solid var(--rule);
+    background: repeating-linear-gradient(90deg, var(--ink) 0 24px, var(--ink-2) 24px 48px);
+    box-shadow: 0 14px 44px rgba(var(--shadow), .3);
   }
   .eyebrow {
-    font: 700 11px/1.4 var(--display); letter-spacing: .3em; text-transform: uppercase;
+    font: 600 11px/1.4 var(--body); letter-spacing: .18em; text-transform: uppercase;
     color: var(--gold);
   }
   h1 {
-    margin: 0; font: 700 clamp(30px, 9vw, 60px)/1.02 var(--display);
-    letter-spacing: -.01em; text-transform: uppercase; text-wrap: balance;
+    margin: 0; font: 400 clamp(40px, 12vw, 68px)/1.02 var(--display); font-synthesis: none;
+    letter-spacing: -.01em; text-wrap: balance;
     color: var(--gold);
   }
   p { margin: 0; font-size: 17px; line-height: 1.55; opacity: .85; text-wrap: pretty; }
   a {
     margin-top: 8px; color: var(--paper); text-decoration: none;
-    font: 700 10px/1 var(--display); letter-spacing: .28em; text-transform: uppercase;
-    padding: 12px 18px; border: 1px solid var(--rule); border-radius: 999px;
+    font: 600 11px/1 var(--body); letter-spacing: .16em; text-transform: uppercase;
+    padding: 13px 18px; border: 1px solid var(--rule); border-radius: 999px;
   }
   a:hover { background: rgba(201, 162, 74, .12); }
   a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
