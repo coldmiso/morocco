@@ -9,6 +9,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Marrakech · Nov 19–23</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap">
 <style>
 /* ============================================================
    DESIGN TOKENS — every color, font family and font size on the
@@ -36,7 +39,8 @@
 
   /* --- fonts --- */
   --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  --font-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --font-display:"Shrikhand","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --font-display-weight:400;  /* Shrikhand has one weight; never fake-bold it */
 
   /* --- type scale --- */
   --fs-tag:10px;        /* "To confirm" tags */
@@ -77,7 +81,7 @@ a{color:inherit;text-decoration:none}
 .panel.on{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0}
+h1,h2,h3{font-family:var(--font-display);font-weight:var(--font-display-weight);font-synthesis:none;margin:0}
 .eyebrow{
   font-size:var(--fs-label);letter-spacing:.18em;text-transform:uppercase;
   color:rgb(var(--gold));font-weight:600;margin:0 0 10px
@@ -119,7 +123,7 @@ p{margin:0 0 14px;color:rgb(var(--text-soft))}
 .theme:active{opacity:.85}
 .theme img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .theme.photo:before{content:"";position:absolute;inset:0;z-index:1;
-  background:linear-gradient(180deg,rgba(var(--indigo),0) 38%,rgba(var(--indigo),.94) 88%)}
+  background:linear-gradient(180deg,rgba(var(--indigo),0) 30%,rgba(var(--indigo),.95) 78%)}
 .theme .in{position:relative;z-index:2}
 .theme .k{font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;color:rgb(var(--gold));font-weight:600}
 .theme h3{font-size:var(--fs-card);line-height:1.15;margin-top:4px}
@@ -144,7 +148,7 @@ p{margin:0 0 14px;color:rgb(var(--text-soft))}
   flex:0 0 auto;border:1px solid rgba(var(--glass),.16);background:transparent;color:rgb(var(--cream));
   font:inherit;font-size:var(--fs-note);padding:9px 15px;border-radius:999px;cursor:pointer;white-space:nowrap
 }
-.day-btn b{display:block;font-family:var(--font-display);font-size:var(--fs-ui);font-weight:600}
+.day-btn b{display:block;font-family:var(--font-display);font-size:var(--fs-ui);font-weight:var(--font-display-weight);font-synthesis:none}
 .day-btn.on{background:rgb(var(--gold));color:rgb(var(--on-gold));border-color:rgb(var(--gold))}
 
 .tl{position:relative;padding-left:74px;margin-top:6px}
