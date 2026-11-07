@@ -26,9 +26,11 @@ Owner: Lucas Warfield. Guests open this on their phones, often on mobile data ab
 
 ## Design system
 - The event poster is the design anchor: deep indigo, lantern gold, blush coral.
+  Main site is light: tan paper background with indigo ink text (owner moved away from the dark purple).
+  Gold text on paper uses `--accent-text` (ochre) for contrast; bright `--accent` gold is for fills only.
 - All colors, fonts and the type scale live as CSS custom properties in one `:root` block.
   Restyle by editing tokens, not by hard-coding values in rules.
-- Current fonts — main site: Shrikhand (display: hero, headings, cards; one weight, no italic, so
+- Current fonts — main site: Gloock (display: hero, headings, cards; one weight, no italic, so
   `font-synthesis:none`) from Google Fonts + the system UI stack (body).
   Theme pages: Syncopate (display, uppercase, wide tracking) + Instrument Sans (body), from Google Fonts.
   (Subject to change — update this line when fonts change.)
