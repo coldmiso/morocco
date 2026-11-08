@@ -30,7 +30,8 @@
   }
   @supports (height: 1svh) { :root { --row: 56svh; } }
   @media (min-aspect-ratio: 3/4) {
-    :root { --u: 62vh; --row: 72vh; }
+    /* laptop: bigger cutouts (capped by width so narrow landscape screens don't overflow) */
+    :root { --u: min(78vh, 52vw); --row: 82vh; }
   }
 
   html { scroll-behavior: smooth; }
@@ -56,7 +57,7 @@
   @supports (height: 1svh) { .stage { --vh: 100svh; } }
   .stage .sharp {
     top: 0; left: 50%;
-    width: max(100vw, calc(var(--vh) * var(--overscan) * 941 / 1672)); height: auto;
+    width: max(100vw, calc(var(--vh) * var(--overscan) * 1125 / 2000)); height: auto;
     transform: translate3d(-50%, var(--pan, 0px), 0);
     will-change: transform;
   }
@@ -151,7 +152,7 @@
 </head>
 <body>
 <div class="stage" aria-hidden="true">
-  <img class="sharp" src="poster.webp" alt="" width="941" height="1672" fetchpriority="high">
+  <img class="sharp" src="poster.webp" alt="" width="1125" height="2000" fetchpriority="high">
   <div class="shade"></div>
 </div>
 
