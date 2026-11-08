@@ -36,6 +36,9 @@ Owner: Lucas Warfield. Guests open this on their phones, often on mobile data ab
   "keep in sync" with `/index.html`). The Black & Gold card stays black with gold type.
   (Subject to change — update this line when fonts change.)
 - Images: WebP, compressed, `width`/`height` set, `loading="lazy"` below the fold.
+- Main-site background texture: `assets/paper-800.webp` (phones) / `paper-1213.webp` (≥768px), set via
+  `--bg-image` on a fixed `body::before` layer (not `background-attachment:fixed`, which breaks on iOS),
+  lightened by `--bg-wash`. Text that sits directly on it must pass 4.5:1 against the texture.
 - Animations: scroll-driven via rAF/IntersectionObserver, transform/opacity only,
   and honor `prefers-reduced-motion`.
 

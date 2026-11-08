@@ -27,14 +27,19 @@
   --surface:248,242,230;    /* #F8F2E6  lighter paper: hero, cards, events */
   --text:35,32,74;          /* #23204A  indigo ink: headings, main text */
   --text-soft:62,58,96;     /* #3E3A60  paragraph text */
-  --muted:101,93,112;       /* #655D70  secondary text */
+  --muted:85,78,96;         /* #554E60  secondary text */
   --line:35,32,74;          /* #23204A  borders & hairlines (used at low alpha) */
   --accent:232,180,74;      /* #E8B44A  lantern gold fills: active day, dots, rules */
-  --accent-text:138,90,12;  /* #8A5A0C  gold for text on paper (readable) */
+  --accent-text:115,74,8;   /* #734A08  gold for text on paper (readable on the texture) */
   --on-accent:35,32,74;     /* #23204A  text on gold fills */
   --accent-2:240,137,126;   /* #F0897E  blush coral: night events */
   --scrim:42,26,18;         /* #2A1A12  warm umber shade over photos */
   --on-photo:248,242,230;   /* #F8F2E6  text over photos */
+
+  /* --- page background texture: one file per device size (only one downloads);
+         paper wash lightens it toward --bg (0 = raw texture, 1 = plain --bg) --- */
+  --bg-image:url("assets/paper-800.webp");
+  --bg-wash:.35;
 
   /* --- Black & Gold card (matches /themes/black-gold/) --- */
   --bg-ink:11,10,8;         /* #0B0A08 */
@@ -76,6 +81,15 @@ body{
   overscroll-behavior-y:none;
 }
 a{color:inherit;text-decoration:none}
+/* Fixed texture layer (background-attachment:fixed is unreliable on iOS). It's a CSS
+   background, so it never blocks first paint: the page shows on plain --bg first. */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(rgba(var(--bg),var(--bg-wash)),rgba(var(--bg),var(--bg-wash))),
+    var(--bg-image) center/cover no-repeat;
+}
+@media (min-width:768px){ :root{--bg-image:url("assets/paper-1213.webp")} }
 
 /* ---------- layout shell ---------- */
 .wrap{
@@ -149,7 +163,8 @@ p{margin:0 0 14px;color:rgb(var(--text-soft))}
 .days{
   display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;margin:0 -20px;
   padding-left:20px;padding-right:20px;scrollbar-width:none;
-  position:sticky;top:0;z-index:5;background:rgb(var(--bg));
+  position:sticky;top:0;z-index:5;background:rgba(var(--bg),.88);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
 }
 .days::-webkit-scrollbar{display:none}
 .day-btn{
