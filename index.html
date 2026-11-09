@@ -60,8 +60,9 @@
 
   /* --- fonts --- */
   --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  --font-display:"Gloock","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
-  --font-display-weight:400;  /* Gloock has one weight, no italic; never fake them */
+  --font-display:var(--font-body);  /* headings: same legible system font as the body */
+  --font-display-weight:600;
+  --font-hero:"Gloock","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;  /* hero title only */
 
   /* --- type scale --- */
   --fs-tag:10px;        /* "To confirm" tags */
@@ -117,7 +118,7 @@ a{color:inherit;text-decoration:none}
 .panel.on{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-h1,h2,h3{font-family:var(--font-display);font-weight:var(--font-display-weight);font-synthesis:none;margin:0}
+h1,h2,h3{font-family:var(--font-display);font-weight:var(--font-display-weight);letter-spacing:-.01em;margin:0}
 .eyebrow{
   font-size:var(--fs-label);letter-spacing:.18em;text-transform:uppercase;
   color:rgb(var(--accent-text));font-weight:600;margin:0 0 10px
@@ -136,7 +137,7 @@ p{margin:0 0 14px;color:rgb(var(--text-soft))}
   border:1px solid rgba(var(--accent),.55);
 }
 .hero .mark{width:34px;height:1px;background:rgb(var(--accent-text));margin:0 auto 18px;opacity:.8}
-.hero h1{font-size:var(--fs-hero);line-height:1.05;letter-spacing:-.01em}
+.hero h1{font-family:var(--font-hero);font-weight:400;font-synthesis:none;font-size:var(--fs-hero);line-height:1.05;letter-spacing:-.01em}
 .hero h1 em{font-style:italic;color:rgb(var(--accent-text));display:block;font-size:var(--fs-hero-sub);margin-top:6px}
 .hero .dates{
   margin-top:16px;font-size:var(--fs-note);letter-spacing:.14em;text-transform:uppercase;color:rgb(var(--text))
@@ -148,6 +149,9 @@ p{margin:0 0 14px;color:rgb(var(--text-soft))}
 .fact{background:rgb(var(--surface));border:1px solid rgba(var(--line),.10);border-radius:var(--radius);padding:14px}
 .fact .k{font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;color:rgb(var(--muted))}
 .fact .v{font-size:var(--fs-ui);margin-top:4px}
+.fact.tap{display:block;border-color:rgba(var(--accent-text),.4)}
+.fact.tap:active{background:rgba(var(--line),.06)}
+.fact .go{font-size:var(--fs-note);font-weight:600;color:rgb(var(--accent-text));margin-top:8px}
 
 /* ---------- theme nights ---------- */
 .themes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -282,11 +286,11 @@ nav button.on{color:rgb(var(--accent-text))}
 
     <div class="facts" id="h-facts"></div>
 
-    <h2 class="section-title">Before you go</h2>
-    <div id="h-todo"></div>
-
     <h2 class="section-title">Theme Nights</h2>
     <div class="themes" id="h-themes"></div>
+
+    <h2 class="section-title">Before you go</h2>
+    <div id="h-todo"></div>
     <p class="small" id="h-foot" style="margin-top:22px"></p>
   </section>
 
@@ -318,8 +322,9 @@ const DATA = {
   home: {
     intro1: "Celebrate Lucy's thirtieth in style at palatial digs with broke grad student prices in Marrakech.",
     intro2: "Immeasurable gratitude for your consideration on this trip. If you’re invited, you have already made an impact on Lucy's very short life!!!",
+    /* third item (optional) makes the card a link */
     facts: [
-      ["Where", "Route d'Ourika, Marrakesh, Marrakesh-Safi 40000"],
+      ["Where", "Kasbah Caracalla, Marrakech", "https://maps.app.goo.gl/F96ZsKTZxTaeWjob9"],
       ["Arrive", "Thu 19 Nov, check-in from 3 PM"],
       ["Depart", "Mon 23 Nov, checkout 11 AM"],
       ["Dress", "Two theme nights — Black & Gold + Morocco Maximalist"]
@@ -405,11 +410,13 @@ const DATA = {
     { t:"The Airbnb", d:"Rock the Kasbah", url:"https://www.airbnb.com/rooms/39713727?" },
     { t:"Airport Coordination", d:"Send us your flight times so we can coordinate pickups / drop-offs", url:"#" },
 
+    /* "Good to know" is hidden for now — to bring it back, move these lines out of the comment:
     { head:"Good to know" },
     { t:"Packing list & logistics", d:"Just our recommendations", url:"#" },
     { t:"Black & Gold Moodboard", d:"Thu 19 Nov · Mood board coming soon", url:"themes/black-gold/" },
     { t:"Moroccan Maximalist Moodboard", d:"Sat 21 Nov · Scroll the collage", url:"themes/maximalist/" },
-    { t:"Weather & what to expect", d:"Warm days, cold nights", url:"#" }
+    { t:"Weather & what to expect", d:"Warm days, cold nights", url:"#" },
+    */
   ]
 };
 
@@ -425,8 +432,9 @@ $("#s-foot").textContent = DATA.scheduleFoot;
 const d = Math.ceil((new Date(DATA.countdownTo) - new Date())/864e5);
 $("#h-count").textContent = d > 0 ? d + " days to go" : (d === 0 ? "Today" : "");
 
-$("#h-facts").innerHTML = DATA.home.facts
-  .map(([k,v]) => `<div class="fact"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+$("#h-facts").innerHTML = DATA.home.facts.map(([k,v,url]) => url
+  ? `<a class="fact tap" href="${url}" target="_blank" rel="noopener nofollow"><div class="k">${k}</div><div class="v">${v}</div><div class="go">Open in Maps ›</div></a>`
+  : `<div class="fact"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
 
 $("#h-todo").innerHTML = DATA.home.todo.map(([t,dd,url],i) => {
   const inner = `<div class="num">${String(i+1).padStart(2,"0")}</div>

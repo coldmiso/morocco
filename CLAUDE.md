@@ -35,8 +35,9 @@ Owner: Lucas Warfield. Guests open this on their phones, often on mobile data ab
   Gold text on paper uses `--accent-text` (ochre) for contrast; bright `--accent` gold is for fills only.
 - All colors, fonts and the type scale live as CSS custom properties in the `:root` block (plus its night override).
   Restyle by editing tokens, not by hard-coding values in rules.
-- Current fonts — main site: Gloock (display: hero, headings, cards; one weight, no italic, so
-  `font-synthesis:none`) from Google Fonts + the system UI stack (body).
+- Current fonts — main site: the system UI stack for body AND headings (semibold), chosen for legibility.
+  Gloock (Google Fonts, one weight, no italic → `font-synthesis:none`) is used only for the hero title
+  via `--font-hero`.
   Theme pages use the same fonts and paper palette; each keeps its own small `:root` (marked
   "keep in sync" with `/index.html`). The Black & Gold card stays black with gold type.
   (Subject to change — update this line when fonts change.)
