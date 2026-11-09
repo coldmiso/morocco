@@ -29,7 +29,7 @@
   --text-soft:62,58,96;     /* #3E3A60  paragraph text */
   --muted:85,78,96;         /* #554E60  secondary text */
   --line:35,32,74;          /* #23204A  borders & hairlines (used at low alpha) */
-  --accent:232,180,74;      /* #E8B44A  lantern gold fills: active day, dots, rules */
+  --accent:232,180,74;      /* #E8B44A  lantern gold fills: dots, dress codes, rules */
   --accent-text:115,74,8;   /* #734A08  gold for text on paper (readable on the texture) */
   --on-accent:35,32,74;     /* #23204A  text on gold fills */
   --accent-2:240,137,126;   /* #F0897E  blush coral: night events */
@@ -55,14 +55,14 @@
   /* --- type scale --- */
   --fs-tag:10px;        /* "To confirm" tags */
   --fs-tab:10.5px;      /* tab bar labels (phone) */
-  --fs-label:11px;      /* eyebrows, fact labels, card dates */
+  --fs-label:11px;      /* eyebrows, fact labels, card & day dates */
   --fs-time:12px;       /* timeline times */
-  --fs-note:13px;       /* notes, descriptions, dates, countdown, day pills */
+  --fs-note:13px;       /* notes, descriptions, dates, countdown */
   --fs-small:14px;      /* .small footers, tab bar labels (desktop) */
-  --fs-ui:15px;         /* fact values, link titles, day pill names */
+  --fs-ui:15px;         /* fact values, link titles */
   --fs-body:16px;       /* body copy, event titles */
-  --fs-card:18px;       /* theme card titles, link arrows */
-  --fs-section:22px;    /* section titles, Black & Gold card title */
+  --fs-card:18px;       /* theme card titles, dress-code titles, link arrows */
+  --fs-section:22px;    /* section & day titles, Black & Gold card title */
   --fs-hero-sub:26px;   /* "Lucy's 30th" */
   --fs-hero:38px;       /* "Moroccan Nights" */
 
@@ -160,19 +160,16 @@ p{margin:0 0 14px;color:rgb(var(--text-soft))}
 .theme.bg .d{color:rgb(var(--bg-paper));opacity:.75;margin-top:12px}
 
 /* ---------- schedule ---------- */
-.days{
-  display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;margin:0 -20px;
-  padding-left:20px;padding-right:20px;scrollbar-width:none;
-  position:sticky;top:0;z-index:5;background:rgba(var(--bg),.88);
-  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+/* one scrolling page; each day's header sticks while you're in that day */
+.day{margin-bottom:18px}
+.day-h{
+  position:sticky;top:0;z-index:5;margin:0 -20px 10px;padding:12px 20px 10px;
+  background:rgba(var(--bg),.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(var(--line),.10)
 }
-.days::-webkit-scrollbar{display:none}
-.day-btn{
-  flex:0 0 auto;border:1px solid rgba(var(--line),.2);background:transparent;color:rgb(var(--text));
-  font:inherit;font-size:var(--fs-note);padding:9px 15px;border-radius:999px;cursor:pointer;white-space:nowrap
-}
-.day-btn b{display:block;font-family:var(--font-display);font-size:var(--fs-ui);font-weight:var(--font-display-weight);font-synthesis:none}
-.day-btn.on{background:rgb(var(--accent));color:rgb(var(--on-accent));border-color:rgb(var(--accent))}
+.day-h .k{font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;color:rgb(var(--accent-text));font-weight:600}
+.day-h h2{font-size:var(--fs-section);line-height:1.15;margin-top:2px}
+.day-h .today{margin:0 0 0 8px;vertical-align:1px}
 
 .tl{position:relative;padding-left:74px;margin-top:6px}
 .tl:before{content:"";position:absolute;left:66px;top:6px;bottom:6px;width:1px;background:rgba(var(--line),.18)}
@@ -188,6 +185,10 @@ p{margin:0 0 14px;color:rgb(var(--text-soft))}
   border-color:rgba(var(--accent-2),.6)}
 .ev.night:after{background:rgb(var(--accent-2));border-color:rgb(var(--accent-2))}
 .ev.tent{border-style:dashed;opacity:.85}
+.ev.dress{display:block;background:rgba(var(--accent),.16);border-color:rgba(var(--accent-text),.45)}
+.ev.dress:after{border-radius:2px;transform:rotate(45deg);background:rgb(var(--accent));border-color:rgb(var(--accent-text))}
+.ev.dress .k{font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;color:rgb(var(--accent-text));font-weight:600}
+.ev.dress h3{font-size:var(--fs-card);margin-top:2px}
 .tag{display:inline-block;font-size:var(--fs-tag);letter-spacing:.12em;text-transform:uppercase;
   color:rgb(var(--accent-text));border:1px solid rgba(var(--accent-text),.45);border-radius:999px;padding:2px 8px;margin-bottom:6px}
 
@@ -229,7 +230,8 @@ nav button.on{color:rgb(var(--accent-text))}
   nav button{flex:0 0 auto;flex-direction:row;gap:8px;font-size:var(--fs-small);padding:0 20px;height:58px}
   nav button svg{width:18px;height:18px}
   .wrap{padding-bottom:60px}
-  .days{top:58px}
+  .day-h{top:58px;border-radius:0 0 14px 14px;border-bottom:0}
+  .day{scroll-margin-top:58px}
 }
 </style>
 </head>
@@ -272,7 +274,6 @@ nav button.on{color:rgb(var(--accent-text))}
   <!-- ================= SCHEDULE ================= -->
   <section class="panel" id="schedule">
     <p class="eyebrow" style="margin-top:22px">The Programme - In Progress</p>
-    <div class="days" id="day-tabs"></div>
     <div id="tl-host"></div>
     <p class="small" id="s-foot"></p>
   </section>
@@ -300,8 +301,8 @@ const DATA = {
     intro2: "Immeasurable gratitude for your consideration on this trip. If you’re invited, you have already made an impact on Lucy's very short life!!!",
     facts: [
       ["Where", "Route d'Ourika, Marrakesh, Marrakesh-Safi 40000"],
-      ["Arrive", "Thu 19 Nov"],
-      ["Depart", "Mon 23 Nov, after lunch"],
+      ["Arrive", "Thu 19 Nov, check-in from 3 PM"],
+      ["Depart", "Mon 23 Nov, checkout 11 AM"],
       ["Dress", "Two theme nights — Black & Gold + Morocco Maximalist"]
     ],
     /* third item is an optional link — leave it off for a plain, non-tappable row */
@@ -321,55 +322,49 @@ const DATA = {
       { day:"Sat 21 Nov", title:"Moroccan Maximalist", note:"Scroll the collage ›",
         url:"themes/maximalist/", img:"themes/maximalist/card.webp" }
     ],
-    foot: "Site last updated 16 Sept."
+    foot: "Site last updated 9 Nov."
   },
 
-  /* tone: "" = normal · "night" = late-night highlight · "tent" = not confirmed */
+  /* One scrolling page, one block per day. iso = the date (used to jump to "today").
+     tone: "" = normal · "night" = highlight · "tent" = not confirmed
+     A dress-code entry is { t, dress:"…", url:"…" } and links to that night's mood board. */
   schedule: [
-    { day:"Thu", date:"19 Nov", label:"Arrivals",
+    { day:"Thu", date:"19 Nov", iso:"2026-11-19", label:"Arrival day! Hellos!",
       events:[
-        { t:"All day", title:"Arrivals & check-in", note:"Drop bags any time — mint tea on the roof" },
-        { t:"7:00 PM", title:"Welcome Dinner", note:"7 – 9 PM · Courtyard, all together", tone:"night" },
-        { t:"9:30 PM", title:"Rooftop nightcap", note:"Optional, low-key" }
+        { t:"3:00 PM", title:"Check-in begins", note:"Kasbah Caracalla" },
+        { t:"5:00 PM", title:"Welcome drinks & icebreaker activity" },
+        { t:"7:00 PM", title:"Dinner begins" }
       ]},
-    { day:"Fri", date:"20 Nov", label:"Black & Gold",
+    { day:"Fri", date:"20 Nov", iso:"2026-11-20", label:"Settle in & Agafay desert",
       events:[
-        { t:"8:00 AM", title:"Breakfast", note:"8 – 10 AM · Come when you wake up" },
-        { t:"9:00 AM", title:"Yoga by the pool", note:"9 – 9:45 AM · Mats provided" },
-        { t:"10:00 AM", title:"Town walk & souks", note:"10 AM – 12 PM · Guided, meet at the front door" },
-        { t:"12:30 PM", title:"Lunch", note:"12:30 – 2 PM · Poolside, casual" },
-        { t:"2:30 PM", title:"Dune buggies", note:"2:30 – 5 PM · Sign-up sheet in WhatsApp", tone:"tent" },
-        { t:"2:30 PM", title:"Hammam & spa", note:"2:30 – 5 PM · The gentler option" },
-        { t:"6:00 PM", title:"Intro Games", note:"6 – 7 PM · Nobody escapes this one" },
-        { t:"7:00 PM", title:"Black and Gold Night", note:"7 – 9 PM · Dinner, dress the theme", tone:"night" },
-        { t:"10:00 PM", title:"Dancing — Night One", note:"10 PM – late · DJ TBC", tone:"night" }
+        { t:"9:00 AM", title:"Hammam & spa services", note:"9 AM – 1 PM" },
+        { t:"2:30 PM", title:"ATV, camels, Agafay desert tour & dinner", note:"Pickup at 2:30 PM · back around 9 PM", tone:"night" },
+        { t:"Evening", dress:"Black & Gold Chic", url:"themes/black-gold/" },
+        { t:"9:00 PM", title:"Return to the house", note:"Around 9 PM" },
+        { t:"10:00 PM", title:"Dance party & libations begin" }
       ]},
-    { day:"Sat", date:"21 Nov", label:"The Big One",
+    { day:"Sat", date:"21 Nov", iso:"2026-11-21", label:"Chill day at the house",
       events:[
-        { t:"8:00 AM", title:"Breakfast", note:"8 – 10 AM" },
-        { t:"9:00 AM", title:"Yoga by the pool", note:"9 – 9:45 AM" },
-        { t:"10:00 AM", title:"Free morning", note:"Pool, market run, or nothing at all" },
-        { t:"12:30 PM", title:"Lunch", note:"12:30 – 2 PM" },
-        { t:"2:00 PM", title:"Group photo", note:"2 PM sharp · Wear something you like" },
-        { t:"7:00 PM", title:"Maximal Marrakesh", note:"7 – 9 PM · The big dinner, maximum colour", tone:"night" },
-        { t:"9:00 PM", title:"Presentation & toasts", note:"9 – 10 PM · Fire throwers, speeches, cake", tone:"night" },
-        { t:"10:00 PM", title:"Dancing — Night Two", note:"10 PM – late · DJ TBC", tone:"night" }
+        { t:"9:00 AM", title:"Hammam & spa services available", note:"9 AM – 3 PM" },
+        { t:"Evening", dress:"Marrakech Maximalism", url:"themes/maximalist/" },
+        { t:"5:00 PM", title:"Murder mystery party begins", tone:"night" },
+        { t:"7:00 PM", title:"Dinner is served" },
+        { t:"7:00 PM", title:"Marrakech traditional music performance", note:"7 – 8 PM" },
+        { t:"10:00 PM", title:"Dance party & DJs" }
       ]},
-    { day:"Sun", date:"22 Nov", label:"Souks & Sundown",
+    { day:"Sun", date:"22 Nov", iso:"2026-11-22", label:"Free time to explore Marrakech",
       events:[
-        { t:"8:00 AM", title:"Breakfast", note:"8 – 10 AM" },
-        { t:"9:00 AM", title:"Yoga by the pool", note:"9 – 9:45 AM" },
-        { t:"10:30 AM", title:"Agafay desert excursion", note:"10:30 AM – 2 PM · Optional, sign up in WhatsApp", tone:"tent" },
-        { t:"12:30 PM", title:"Lunch", note:"12:30 – 2 PM · Poolside for anyone staying back" },
-        { t:"3:00 PM", title:"Free afternoon", note:"Pool, hammam, or one last run at the souks" },
-        { t:"7:00 PM", title:"Long table dinner", note:"7 – 9 PM · Last proper dinner, all together", tone:"night" },
-        { t:"9:30 PM", title:"Dancing — Night Three", note:"9:30 PM – late · Wind-down set", tone:"night" }
+        { t:"Morning", title:"Breakfast", note:"À la carte, charged to your room" },
+        { t:"11:00 AM", title:"Pickup to go to the city center" },
+        { t:"2:00 PM", title:"Jardin Majorelle & YSL Museum", note:"Scheduled tickets" },
+        { t:"8:00 PM", title:"Group dinner in Marrakech", tone:"tent" },
+        { t:"10:00 PM", title:"Ride back to the house", tone:"tent" }
       ]},
-    { day:"Mon", date:"23 Nov", label:"Departures",
+    { day:"Mon", date:"23 Nov", iso:"2026-11-23", label:"Departure day! Goodbyes!",
       events:[
-        { t:"8:00 AM", title:"Breakfast", note:"8 – 10 AM" },
-        { t:"12:30 PM", title:"Check-out lunch & farewells", note:"12:30 – 2:30 PM · Bags to the lobby first" },
-        { t:"3:00 PM", title:"Airport transfers", note:"Rolling — tell us your flight time" }
+        { t:"Morning", title:"Breakfast", note:"À la carte, charged to your room" },
+        { t:"11:00 AM", title:"Checkout" },
+        { t:"Afternoon", title:"Option to stay at the house", note:"Pool and shower access until 3–4 PM" }
       ]}
   ],
   scheduleFoot: "All times Marrakech local (GMT+1).",
@@ -435,38 +430,51 @@ $("#link-host").innerHTML = DATA.links.map(l =>
          <div class="ar">›</div></a>`
 ).join("");
 
-const dayTabs = $("#day-tabs"), tlHost = $("#tl-host");
-dayTabs.innerHTML = DATA.schedule.map((s,i) =>
-  `<button class="day-btn${i===0?" on":""}" data-i="${i}"><b>${s.day}</b>${s.date}</button>`).join("");
+/* today's date in Marrakech, e.g. "2026-11-20" — used to jump to and mark the current day */
+const todayISO = new Date().toLocaleDateString("en-CA", { timeZone:"Africa/Casablanca" });
 
-function drawDay(i){
-  const s = DATA.schedule[i];
-  tlHost.innerHTML =
-    `<p class="eyebrow" style="margin:6px 0 12px">${s.label}</p><div class="tl">` +
-    s.events.map(e => `
+$("#tl-host").innerHTML = DATA.schedule.map(s => `
+  <section class="day" id="day-${s.iso}">
+    <header class="day-h">
+      <div class="k">${s.day} ${s.date}${s.iso===todayISO ? '<span class="tag today">Today</span>' : ""}</div>
+      <h2>${s.label}</h2>
+    </header>
+    <div class="tl">${s.events.map(e => e.dress ? `
+      <a class="ev dress" href="${e.url}">
+        <div class="time">${e.t}</div>
+        <div class="k">Evening dress code</div>
+        <h3>${e.dress}</h3>
+        <div class="note">See the mood board ›</div>
+      </a>` : `
       <div class="ev ${e.tone||""}">
         <div class="time">${e.t}</div>
         ${e.tone==="tent" ? '<span class="tag">To confirm</span><br>' : ""}
         <h3>${e.title}</h3>
-        <div class="note">${e.note||""}</div>
-      </div>`).join("") + `</div>`;
-  dayTabs.querySelectorAll(".day-btn").forEach((b,j)=>b.classList.toggle("on", j===i));
-}
-dayTabs.addEventListener("click", e => {
-  const b = e.target.closest(".day-btn"); if(b) drawDay(+b.dataset.i);
-});
-drawDay(0);
+        ${e.note ? `<div class="note">${e.note}</div>` : ""}
+      </div>`).join("")}
+    </div>
+  </section>`).join("");
 
 function show(tab){
   document.querySelectorAll(".panel").forEach(p => p.classList.toggle("on", p.id===tab));
   document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.tab===tab));
   if(location.hash.slice(1) !== tab) history.replaceState(null,"","#"+tab);
-  window.scrollTo(0,0);
+  scrollFor(tab);
+}
+/* Schedule opens on today's day during the trip; everything else opens at the top */
+function scrollFor(tab){
+  const today = tab==="schedule" && document.getElementById("day-"+todayISO);
+  if(today) today.scrollIntoView(); else window.scrollTo(0,0);
 }
 $("#nav").addEventListener("click", e => {
   const b = e.target.closest("button"); if(b) show(b.dataset.tab);
 });
-if(["home","schedule","links"].includes(location.hash.slice(1))) show(location.hash.slice(1));
+const startTab = location.hash.slice(1);
+if(["home","schedule","links"].includes(startTab)){
+  show(startTab);
+  /* the browser's own jump to #schedule happens after this script, so redo ours on load */
+  addEventListener("load", () => setTimeout(() => scrollFor(startTab), 0));
+}
 </script>
 </body>
 </html>
