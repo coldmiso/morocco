@@ -82,6 +82,23 @@
   .cue svg { width: 12px; height: 12px; animation: nudge 1.6s ease-in-out infinite; }
   @keyframes nudge { 50% { transform: translateY(4px); } }
 
+  /* ---------- back button: always pinned top-left ---------- */
+  .back {
+    position: fixed; z-index: 10;
+    top: calc(env(safe-area-inset-top, 0px) + 14px);
+    left: calc(env(safe-area-inset-left, 0px) + 14px);
+    display: flex; align-items: center; gap: 6px;
+    height: 44px; padding: 0 16px 0 12px; border-radius: 999px;
+    background: rgba(248, 242, 230, .92); color: var(--ink); text-decoration: none;
+    border: 1px solid rgba(var(--line), .15);
+    box-shadow: 0 4px 16px rgba(var(--shadow), .18);
+    font: 600 11px/1 var(--body); letter-spacing: .16em; text-transform: uppercase;
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  }
+  .back svg { width: 16px; height: 16px; flex: none; }
+  .back:hover { background: rgba(248, 242, 230, 1); }
+  .back:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; }
+
   /* ---------- scroll track ---------- */
   .track {
     position: relative; z-index: 1;
@@ -155,6 +172,11 @@
   <img class="sharp" src="poster.webp" alt="" width="1125" height="2000" fetchpriority="high">
   <div class="shade"></div>
 </div>
+
+<a class="back" href="../../">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+  Trip site
+</a>
 
 <div class="cue" aria-hidden="true">
   Scroll
