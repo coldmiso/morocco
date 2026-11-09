@@ -6,6 +6,20 @@
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="googlebot" content="noindex, nofollow">
 <meta name="theme-color" content="#F1E6D2">
+<script>
+/* Day (paper) 7 AM–6 PM, night (indigo) otherwise, on the viewer's own clock.
+   Preview either with ?time=day or ?time=night. Re-checked every 5 minutes. */
+(function(){
+  var force = (location.search.match(/[?&]time=(day|night)/) || [])[1];
+  function set(){
+    var h = new Date().getHours(), night = force ? force === "night" : (h >= 18 || h < 7);
+    document.documentElement.setAttribute("data-time", night ? "night" : "day");
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", night ? "#14143A" : "#F1E6D2");
+  }
+  set(); setInterval(set, 300000);
+})();
+</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Marrakech · Nov 19–23</title>
@@ -22,7 +36,8 @@
 :root{
   color-scheme:light;
 
-  /* --- palette: paper + indigo ink, lantern gold, blush coral --- */
+  /* --- DAY palette (7 AM – 6 PM): paper + indigo ink, lantern gold, blush coral.
+         The NIGHT palette is the block right after this one. --- */
   --bg:241,230,210;         /* #F1E6D2  paper: page background, tab bar */
   --surface:248,242,230;    /* #F8F2E6  lighter paper: hero, cards, events */
   --text:35,32,74;          /* #23204A  indigo ink: headings, main text */
@@ -30,16 +45,12 @@
   --muted:85,78,96;         /* #554E60  secondary text */
   --line:35,32,74;          /* #23204A  borders & hairlines (used at low alpha) */
   --accent:232,180,74;      /* #E8B44A  lantern gold fills: dots, dress codes, rules */
-  --accent-text:115,74,8;   /* #734A08  gold for text on paper (readable on the texture) */
+  --accent-text:115,74,8;   /* #734A08  gold for text on paper (readable) */
   --on-accent:35,32,74;     /* #23204A  text on gold fills */
-  --accent-2:240,137,126;   /* #F0897E  blush coral: night events */
+  --accent-2:240,137,126;   /* #F0897E  blush coral: highlighted events */
+  --out:44,88,138;          /* #2C588A  tile blue: "Outing" (activities away from the house) */
   --scrim:42,26,18;         /* #2A1A12  warm umber shade over photos */
   --on-photo:248,242,230;   /* #F8F2E6  text over photos */
-
-  /* --- page background texture: one file per device size (only one downloads);
-         paper wash lightens it toward --bg (0 = raw texture, 1 = plain --bg) --- */
-  --bg-image:url("assets/paper-800.webp");
-  --bg-wash:.35;
 
   /* --- Black & Gold card (matches /themes/black-gold/) --- */
   --bg-ink:11,10,8;         /* #0B0A08 */
@@ -70,6 +81,21 @@
   --bar-h:62px;
   --radius:16px;
 }
+/* NIGHT palette (6 PM – 7 AM on the viewer's clock): the original deep indigo.
+   <html data-time="night"> is set by the small script in <head> before first paint. */
+:root[data-time="night"]{
+  color-scheme:dark;
+  --bg:20,20,58;            /* #14143A  deep indigo */
+  --surface:30,30,82;       /* #1E1E52 */
+  --text:247,240,228;       /* #F7F0E4  cream */
+  --text-soft:230,225,242;  /* #E6E1F2 */
+  --muted:169,168,200;      /* #A9A8C8 */
+  --line:255,255,255;       /* white hairlines */
+  --accent-text:232,180,74; /* #E8B44A  gold reads fine on indigo */
+  --on-accent:36,26,0;      /* #241A00 */
+  --out:141,184,232;        /* #8DB8E8  light tile blue */
+  --scrim:20,20,58;
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{
@@ -81,15 +107,6 @@ body{
   overscroll-behavior-y:none;
 }
 a{color:inherit;text-decoration:none}
-/* Fixed texture layer (background-attachment:fixed is unreliable on iOS). It's a CSS
-   background, so it never blocks first paint: the page shows on plain --bg first. */
-body::before{
-  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:
-    linear-gradient(rgba(var(--bg),var(--bg-wash)),rgba(var(--bg),var(--bg-wash))),
-    var(--bg-image) center/cover no-repeat;
-}
-@media (min-width:768px){ :root{--bg-image:url("assets/paper-1213.webp")} }
 
 /* ---------- layout shell ---------- */
 .wrap{
@@ -185,6 +202,8 @@ p{margin:0 0 14px;color:rgb(var(--text-soft))}
   border-color:rgba(var(--accent-2),.6)}
 .ev.night:after{background:rgb(var(--accent-2));border-color:rgb(var(--accent-2))}
 .ev.tent{border-style:dashed;opacity:.85}
+.ev.out:after{border-color:rgb(var(--out))}
+.tag.out{color:rgb(var(--out));border-color:rgba(var(--out),.5)}
 .ev.dress{display:block;background:rgba(var(--accent),.16);border-color:rgba(var(--accent-text),.45)}
 .ev.dress:after{border-radius:2px;transform:rotate(45deg);background:rgb(var(--accent));border-color:rgb(var(--accent-text))}
 .ev.dress .k{font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;color:rgb(var(--accent-text));font-weight:600}
@@ -317,7 +336,7 @@ const DATA = {
     ],
     /* style "bg" = black & gold typographic card · img = photo card */
     themes: [
-      { day:"Fri 20 Nov", title:"Black &amp; Gold Night", note:"Mood board coming soon",
+      { day:"Thu 19 Nov", title:"Black &amp; Gold Night", note:"Mood board coming soon",
         url:"themes/black-gold/", style:"bg" },
       { day:"Sat 21 Nov", title:"Moroccan Maximalist", note:"Scroll the collage ›",
         url:"themes/maximalist/", img:"themes/maximalist/card.webp" }
@@ -326,41 +345,44 @@ const DATA = {
   },
 
   /* One scrolling page, one block per day. iso = the date (used to jump to "today").
-     tone: "" = normal · "night" = highlight · "tent" = not confirmed
-     A dress-code entry is { t, dress:"…", url:"…" } and links to that night's mood board. */
+     out:true = activity away from the house ("Outing" tag; everything else is at the house)
+     tone: "" = normal · "night" = coral highlight · "tent" = not confirmed
+     Dress code: { t, dress:"…", url:"…" } — url (optional) links to that night's mood board. */
   schedule: [
-    { day:"Thu", date:"19 Nov", iso:"2026-11-19", label:"Arrival day! Hellos!",
+    { day:"Thu", date:"19 Nov", iso:"2026-11-19", label:"Arrival Day",
       events:[
         { t:"3:00 PM", title:"Check-in begins", note:"Kasbah Caracalla" },
         { t:"5:00 PM", title:"Welcome drinks & icebreaker activity" },
+        { t:"Evening", dress:"Black & Gold Chic", url:"themes/black-gold/" },
         { t:"7:00 PM", title:"Dinner begins" }
       ]},
-    { day:"Fri", date:"20 Nov", iso:"2026-11-20", label:"Settle in & Agafay desert",
+    { day:"Fri", date:"20 Nov", iso:"2026-11-20", label:"Agafay Desert & Camels",
       events:[
         { t:"9:00 AM", title:"Hammam & spa services", note:"9 AM – 1 PM" },
-        { t:"2:30 PM", title:"ATV, camels, Agafay desert tour & dinner", note:"Pickup at 2:30 PM · back around 9 PM", tone:"night" },
-        { t:"Evening", dress:"Black & Gold Chic", url:"themes/black-gold/" },
-        { t:"9:00 PM", title:"Return to the house", note:"Around 9 PM" },
+        { t:"Daytime", title:"Breakfast & lunch at the house" },
+        { t:"2:30 PM", title:"ATV, camels, Agafay desert tour & dinner", note:"Pickup at 2:30 PM · back around 9 PM", out:true, tone:"night" },
+        { t:"Evening", dress:"Whatever you want" },
         { t:"10:00 PM", title:"Dance party & libations begin" }
       ]},
-    { day:"Sat", date:"21 Nov", iso:"2026-11-21", label:"Chill day at the house",
+    { day:"Sat", date:"21 Nov", iso:"2026-11-21", label:"All Day House Party",
       events:[
         { t:"9:00 AM", title:"Hammam & spa services available", note:"9 AM – 3 PM" },
         { t:"Evening", dress:"Marrakech Maximalism", url:"themes/maximalist/" },
         { t:"5:00 PM", title:"Murder mystery party begins", tone:"night" },
-        { t:"7:00 PM", title:"Dinner is served" },
+        { t:"7:00 PM", title:"Big birthday dinner", tone:"night" },
         { t:"7:00 PM", title:"Marrakech traditional music performance", note:"7 – 8 PM" },
-        { t:"10:00 PM", title:"Dance party & DJs" }
+        { t:"10:00 PM", title:"Dance party & libations begin" }
       ]},
-    { day:"Sun", date:"22 Nov", iso:"2026-11-22", label:"Free time to explore Marrakech",
+    { day:"Sun", date:"22 Nov", iso:"2026-11-22", label:"City Exploration Day",
       events:[
         { t:"Morning", title:"Breakfast", note:"À la carte, charged to your room" },
-        { t:"11:00 AM", title:"Pickup to go to the city center" },
-        { t:"2:00 PM", title:"Jardin Majorelle & YSL Museum", note:"Scheduled tickets" },
-        { t:"8:00 PM", title:"Group dinner in Marrakech", tone:"tent" },
+        { t:"11:00 AM", title:"Pickup to go to the city center", out:true },
+        { t:"2:00 PM", title:"Jardin Majorelle & YSL Museum", note:"Scheduled tickets", out:true },
+        { t:"Afternoon", title:"Free time to explore the city", out:true },
+        { t:"8:00 PM", title:"Group dinner in Marrakech", out:true, tone:"tent" },
         { t:"10:00 PM", title:"Ride back to the house", tone:"tent" }
       ]},
-    { day:"Mon", date:"23 Nov", iso:"2026-11-23", label:"Departure day! Goodbyes!",
+    { day:"Mon", date:"23 Nov", iso:"2026-11-23", label:"Departure Day",
       events:[
         { t:"Morning", title:"Breakfast", note:"À la carte, charged to your room" },
         { t:"11:00 AM", title:"Checkout" },
@@ -385,7 +407,7 @@ const DATA = {
 
     { head:"Good to know" },
     { t:"Packing list & logistics", d:"Just our recommendations", url:"#" },
-    { t:"Black & Gold Moodboard", d:"Fri 20 Nov · Mood board coming soon", url:"themes/black-gold/" },
+    { t:"Black & Gold Moodboard", d:"Thu 19 Nov · Mood board coming soon", url:"themes/black-gold/" },
     { t:"Moroccan Maximalist Moodboard", d:"Sat 21 Nov · Scroll the collage", url:"themes/maximalist/" },
     { t:"Weather & what to expect", d:"Warm days, cold nights", url:"#" }
   ]
@@ -440,15 +462,15 @@ $("#tl-host").innerHTML = DATA.schedule.map(s => `
       <h2>${s.label}</h2>
     </header>
     <div class="tl">${s.events.map(e => e.dress ? `
-      <a class="ev dress" href="${e.url}">
+      <${e.url ? `a href="${e.url}"` : "div"} class="ev dress">
         <div class="time">${e.t}</div>
         <div class="k">Evening dress code</div>
         <h3>${e.dress}</h3>
-        <div class="note">See the mood board ›</div>
-      </a>` : `
-      <div class="ev ${e.tone||""}">
+        ${e.url ? '<div class="note">See the mood board ›</div>' : ""}
+      </${e.url ? "a" : "div"}>` : `
+      <div class="ev ${e.tone||""}${e.out ? " out" : ""}">
         <div class="time">${e.t}</div>
-        ${e.tone==="tent" ? '<span class="tag">To confirm</span><br>' : ""}
+        ${e.out ? '<span class="tag out">Outing</span> ' : ""}${e.tone==="tent" ? '<span class="tag">To confirm</span>' : ""}${e.out || e.tone==="tent" ? "<br>" : ""}
         <h3>${e.title}</h3>
         ${e.note ? `<div class="note">${e.note}</div>` : ""}
       </div>`).join("")}
