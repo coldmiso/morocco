@@ -319,6 +319,11 @@ const DATA = {
   dates: "19 – 23 November 2026",
   countdownTo: "2026-11-19T00:00:00+01:00",   // Marrakech time
 
+  /* Printed card QR code points to morocco.warfield.me/#card.
+     "" = open the Home page. Put any link here to send the card there instead, e.g. the
+     shared photo album: "https://photos.app.goo.gl/RK5ZJXMEhtcmDA1T9" */
+  cardLink: "",
+
   home: {
     intro1: "Celebrate Lucy's thirtieth in style at palatial digs with broke grad student prices in Marrakech.",
     intro2: "Immeasurable gratitude for your consideration on this trip. If you’re invited, you have already made an impact on Lucy's very short life!!!",
@@ -421,6 +426,12 @@ const DATA = {
 };
 
 /* ---------- render (no need to edit below) ---------- */
+
+/* #card (the printed QR code): forward to DATA.cardLink if set, otherwise show Home */
+if(location.hash === "#card"){
+  if(DATA.cardLink) location.replace(DATA.cardLink);
+  else history.replaceState(null, "", location.pathname + location.search);
+}
 const $ = s => document.querySelector(s);
 
 $("#h-dates").textContent = DATA.dates;

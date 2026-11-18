@@ -22,6 +22,8 @@ Owner: Lucas Warfield. Guests open this on their phones, often on mobile data ab
 - `/` — main site: three tabs (Home / Schedule / Links & Info). Tab bar at the bottom on phones, top on desktop.
   Schedule is one scrolling page (no day tabs): sticky day headers, dress codes link to the theme pages,
   and during the trip it opens on today (Marrakech time). Itinerary lives in `DATA.schedule`.
+- `/#card` — target of the QR code on the printed cards (permanent: never break it). Goes to Home, or to
+  `DATA.cardLink` if set (e.g. the shared photo album later).
 - `/themes/maximalist/` — Moroccan Maximalist Night scroll collage (floating "Trip site" back button, top-left).
 - `/themes/black-gold/` — Black & Gold Night (placeholder until assets arrive).
 - Theme pages are separate pages so their images never slow down the main site.
